@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script type="text/javascript" src="js/ife31data.js" ></script>
+	</head>
+	<body>
+		<select id="region-select">
+			<option>华东</option>
+			<option>华南</option>
+			<option>华北</option>
+		</select>
+		<select id="product-select">
+			<option>手机</option>
+			<option>笔记本</option>
+			<option>智能音箱</option>
+		</select>
+		<div id="table-wrapper">	
+		</div>
+		<script>
+			var sel1 = document.getElementById("region-select");
+			var sel2 = document.getElementById("product-select");
+			var div = document.getElementById("table-wrapper");
+			sel1.onchange = function(){
+				print(sel1.value,sel2.value);
+			}
+			sel2.onchange = function(){
+				print(sel1.value,sel2.value);
+			}
+			//渲染表格
+			function print(value1,value2){
+				var tab = "<table border='1px'><tr><td>商品</td><td>地区</td>";
+				for(var j=1; j<13; j++){
+					tab += "<td>" + j + "月</td>";
+				}
+				tab += "</tr>" + "<tr>";
+				for(var i in sourceData){
+					if(value1 == sourceData[i].region && value2 == sourceData[i].product){
+						tab += "<td>" + value2 + "</td>" + "<td>" + value1 + "</td>";
+						for(var j=0; j<sourceData[i].sale.length; j++){
+							tab += "<td>" + sourceData[i].sale[j] + "</td>";
+						}
+						tab += "</tr>";
+					}
+				}
+				tab += "</table>";
+				div.innerHTML = tab;
+			}
+		</script>
+	</body>
+</html>

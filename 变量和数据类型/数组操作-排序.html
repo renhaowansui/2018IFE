@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script>
+			var arr1 = [43, 54, 4, -4, 84, 100, 58, 27, 140];
+			var arr2 = ['apple', 'dog', 'cat', 'car', 'zoo', 'orange', 'airplane'];
+			var arr3 = [[10, 14], [16, 60], [7, 44], [26, 35], [22, 63]];
+			var arr4 = [
+					    {
+					        id: 1,
+					        name: 'candy',
+					        value: 40
+					    }, {
+					        id: 2,
+					        name: 'Simon',
+					        value: 50
+					    }, {
+					        id: 3,
+					        name: 'Tony',
+					        value: 45
+					    }, {
+					        id: 4,
+					        name: 'Annie',
+					        value: 60
+					    }
+					];
+			function compareNumbers1(a,b){
+				return a - b;
+			}
+			function compareNumbers2(a,b){
+				return b[1] - a[1];
+			}
+			function compareNumbers3(a,b){
+				return a.value - b.value;
+			}
+			console.log(arr1.sort(compareNumbers1));
+			console.log(arr2.sort());
+			console.log(arr3.sort(compareNumbers2));
+			console.log(arr4.sort(compareNumbers3));
+		</script>
+	</body>
+</html>

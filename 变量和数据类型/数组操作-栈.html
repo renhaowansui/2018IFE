@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<input id="stack-input" type="text">
+		<p id="stack-cont">栈内容：apple-&gt;pear</p>    
+		<button id="push-btn" onclick="jin()">进栈</button>
+		<button id="pop-btn" onclick="tui()">退栈</button>
+		<button id="font-btn" onclick="daying()">打印栈顶元素内容</button>
+		<button id="empty-btn" onclick="panduan()">判断栈是否为空</button>
+		
+		<script>
+		
+		var stack = ["apple", "pear"];
+		var p = document.getElementById("stack-cont");
+		function jin(){
+			var content = document.getElementById("stack-input").value;
+			if(content){
+				stack.push(content)
+				p.innerHTML = "栈内容：" + stack.join("-&gt");
+			}
+		}
+		function tui(){
+			stack.pop();
+			p.innerHTML = "栈内容：" + stack.join("-&gt");
+		}
+		function daying(){
+			alert(stack[0]);
+		}
+		function panduan(){
+			if(!stack.length){
+				alert("为空");
+			}
+		}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<p id="text"></p>
+		-----------------------------------
+		</br>
+		<select id="year-select" onchange="print()">
+		    <option value="2000">2000</option>
+		    <option value="2001">2001</option>
+		    <option value="2002">2002</option>
+		    <option value="2003">2003</option>
+		</select>
+			
+		<select id="month-select" onchange="print()">
+		    <option value="1">1</option>
+		    <option value="2">2</option>
+		    <option value="3">3</option>
+		</select>
+		
+		<select id="day-select" onchange="print()">
+		    <option value="1">1</option>
+		    <option value="2">2</option>
+		    <option value="3">3</option>
+		</select>
+		
+		<select id="hour-select" onchange="print()">
+		    <option value="0">00</option>
+		    <option value="1">01</option>        
+		    <option value="2">02</option>
+		</select>
+		
+		<select id="minite-select" onchange="print()">
+		    <option value="0">0</option>
+		    <option value="1">1</option>
+		    <option value="2">2</option>
+		</select>
+		
+		<select id="second-select" onchange="print()">
+		    <option value="0">0</option>
+		    <option value="1">1</option>
+		    <option value="2">2</option>
+		</select>
+		<p id="result-wrapper"></p>
+		<script>
+			var p = document.getElementById("text");
+			output();
+			function weeken(value){
+				var weekday = new Array(7);
+				weekday[0] = "星期日";
+				weekday[1] = "星期一";
+				weekday[2] = "星期二";
+				weekday[3] = "星期三";
+				weekday[4] = "星期四";
+				weekday[5] = "星期五";
+				weekday[6] = "星期六";
+				return weekday[value];
+			}
+			function getTime(value){
+				if(value < 10){
+					value = "0" + value;
+				}
+				return value;
+			}
+			function output(){
+				var time = new Date();
+				var week = time.getDay();
+				var year = time.getFullYear();
+				var month = time.getMonth() + 1;
+				var day = time.getDate();
+				var hour = time.getHours();
+				var minute = time.getMinutes();
+				var secend = time.getSeconds();
+				month = getTime(month);
+				day = getTime(day);
+				hour = getTime(hour);
+				minute = getTime(minute);
+				secend = getTime(secend);
+				p.innerHTML = year + "年" + month + "月" + day + "日" + weeken(week) + " " + hour +":"+ minute + ":" + secend;
+				setTimeout("output()", 500);
+			}
+			
+			
+			/////////////////////////////////////////////////////
+			var content = document.getElementById("result-wrapper");
+			var se1 = document.getElementById("year-select");
+			var se2 = document.getElementById("month-select");
+			var se3 = document.getElementById("day-select");	
+			var se4 = document.getElementById("hour-select");
+			var se5 = document.getElementById("minite-select");
+			var se6 = document.getElementById("second-select");
+			var str = " 已过去";
+			var passm, passh, passs;
+			print();
+			function print(){
+				settime();
+				content.innerHTML = "所选时间" + se1.value +"年"+ se2.value +"月"+se3.value +"日"+" "+getTime(se4.value) +":"+getTime(se5.value)+":"+getTime(se6.value)
+				+str + passd +"天"+passh +"小时"+ passm +"分"+ passs +"秒";
+				setTimeout(print, 500);
+			}
+			function settime(){
+				var set = new Date(se1.value,se2.value,se3.value,getTime(se4.value),getTime(se5.value),getTime(se6.value));
+				var now = new Date();
+				var pass = now - set;
+				var leave1,leave2,leave3;
+				if(now - set < 0){
+					str = " 现在距离";
+				}else{
+					str = " 已过去";
+				}
+				//计算出相差天数
+				passd=Math.floor(pass/(24*3600*1000));
+				leave1=pass%(24*3600*1000);
+				passh=Math.floor(leave1/(3600*1000));
+				leave2=leave1%(3600*1000);       
+				passm=Math.floor(leave2/(60*1000));
+				leave3=leave2%(60*1000);      
+				passs=Math.round(leave3/1000);
+			}
+		</script>
+	</body>
+</html>

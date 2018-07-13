@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<input id="queue-input" type="text">
+		<p id="queue-cont">队列内容：apple-&gt;pear</p>    
+		<button id="in-btn" onclick="ru()">入队</button>
+		<button id="out-btn" onclick="chu()">出队</button>
+		<button id="font-btn" onclick="daying()">打印队头元素内容</button>
+		<button id="empty-btn" onclick="panduan()">判断队列是否为空</button>
+		
+		<script>
+		var queue = ["apple", "pear"];
+		var p = document.getElementById("queue-cont");
+		function ru(){
+			var content = document.getElementById("queue-input").value;
+			if(content){
+				queue.unshift(content);
+				p.innerHTML = "队列内容：" + queue.join("-&gt");
+			}
+		}
+		function chu(){
+			queue.pop();
+			p.innerHTML = "队列内容：" + queue.join("-&gt");
+		}
+		function daying(){
+			alert(queue[queue.length-1]);
+		}
+		function panduan(){
+			if(!queue.length){
+				alert("为空");
+			}
+		}
+		</script>
+	</body>
+</html>
