@@ -5,9 +5,50 @@
 		<title></title>
 	</head>
 	<body>
+		<!--	使用SVG	几种使用方式	-->
 		<img src="circle1.svg" />
+		
+		<iframe src="circle1.svg" width="200" height="100">
+		</iframe>
+		
 		<embed src="flower.svg" width="500" height="300" 
 		type="image/svg+xml"
 		pluginspage="http://www.adobe.com/svg/viewer/install/" />
+
+		<!--	使用Canvas	-->
+		<canvas id="canvas" width="500" height="400" style="border: 2px solid red; background: gray;">
+		</canvas>	
 	</body>
+	<script>
+			function draw(){
+				var canvas = document.getElementById("canvas");
+				if(canvas.getContext){
+					var line = canvas.getContext("2d");
+					//线
+					line.moveTo(0,0);
+					line.lineTo(500,400);
+					line.strokeStyle = 'green';
+					//矩形
+					line.strokeRect(10,10,50,50);
+					//文字
+					line.fillText("Hello World!",10,50);
+					line.strokeText("renhaowansui",300,200);
+					var circle = canvas.getContext("2d");
+					//圆
+					circle.arc(100,100,20,0,Math.PI*2);
+					//时钟
+					circle.moveTo(250,300);
+					circle.arc(200,300,50,0,Math.PI*2);
+					circle.fillRect(197,297,6,6);
+					circle.moveTo(200,300);
+					circle.lineTo(230,300);
+					circle.moveTo(200,300);
+					circle.lineTo(200,260);
+					circle.stroke();
+					circle.strokeText("12",195,260);
+					circle.strokeText("3",240,305);
+				}
+			}
+			draw();
+		</script>
 </html>
