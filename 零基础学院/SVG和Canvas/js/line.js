@@ -9,7 +9,7 @@ function draw(){
 		g.moveTo(x,y);
 		g.lineTo(0,y);
 		g.lineTo(0,0);
-		g.stroke();
+		
 		g.lineWidth = 2;
 		for(var i = 0; i<sourceData[0].sale.length; i++){
 			g.beginPath();

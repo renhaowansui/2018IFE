@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script type="text/javascript" src="js/ife31data.js" ></script>
+	</head>
+	<body>
+		<div id="region-radio-wrapper">
+			<input type="checkbox" value="华东"/>华东
+			<input type="checkbox" value="华北"/>华北
+			<input type="checkbox" value="华南"/>华南
+			<input id="all1" type="checkbox" value="全选" />全选
+		</div>
+		<div id="product-radio-wrapper">
+			<input type="checkbox" value="手机"/>手机
+			<input type="checkbox" value="笔记本"/>笔记本
+			<input type="checkbox" value="智能音箱"/>智能音箱
+			<input id="all2" type="checkbox" value="全选" />全选
+		</div>
+		<div id="table-wrapper">	
+		</div>
+		<div style="display: inline;">
+			<canvas id="canvas" width="500" height="400" style="border: 1px solid blue; background: gray;">	
+			</canvas>
+		</div>
+		<div style="display: inline;">
+			<svg xmlns="http://www.w3.org/2000/svg" id="main" version="1.1" height="400" width="500" style="background: gray;">	
+  			</svg>
+  		</div>
+		<script>
+			var d1 = document.getElementById("region-radio-wrapper");
+			var check1 = d1.getElementsByTagName("input");
+			var all1 = document.getElementById("all1");
+			var d2 = document.getElementById("product-radio-wrapper");
+			var check2 = d2.getElementsByTagName("input");
+			var all2 = document.getElementById("all2");
+			var div = document.getElementById("table-wrapper");
+			//第一个选择框处理
+			d1.onchange = function(e){
+				var e = e || window.event;
+				var target = e.target || e.srcElement;
+				if(target.nodeName.toLowerCase() == "input"){
+					if(target.value =="全选"){
+						for( var i =0; i<check1.length-1; i++){
+							if(target.checked == true){
+								check1[i].checked = true;
+							}else{
+								check1[i].checked = false;
+							}
+						}
+					}
+					if(all1.checked == true){
+						for(var i = 0; i<check1.length-1; i++){
+							if(check1[i].checked == false){
+								all1.checked = false;
+								break;
+							}
+						}
+					}else{
+						for(var i = 0; i<check1.length-1; i++){
+							if(check1[i].checked == false){
+								break;
+							}
+							if(i == check1.length-2){
+								all1.checked = true;
+							}
+						}
+					}
+					print();
+				}
+			};
+			//第二个选择框处理
+			d2.onchange = function(e){
+				var e = e || window.event;
+				var target = e.target || e.srcElement;
+				if(target.nodeName.toLowerCase() == "input"){
+					if(target.value =="全选"){
+						for( var i =0; i<check2.length-1; i++){
+							if(target.checked == true){
+								check2[i].checked = true;
+							}else{
+								check2[i].checked = false;
+							}
+						}
+					}
+					if(all2.checked == true){
+						for(var i = 0; i<check2.length-1; i++){
+							if(check2[i].checked == false){
+								all2.checked = false;
+								break;
+							}
+						}
+					}else{
+						for(var i = 0; i<check2.length-1; i++){
+							if(check2[i].checked == false){
+								break;
+							}
+							if(i == check2.length-2){
+								all2.checked = true;
+							}
+						}
+					}
+					print();
+				}
+			};
+			//渲染表格
+			function print(){
+				var q = 0;
+				var tab = "<table id='table1' border='1px'><tr><td>商品</td><td>地区</td>";
+				for(var j=1; j<13; j++){
+					tab += "<td>" + j + "月</td>";
+				}
+				tab += "</tr>";
+				//循环遍历数组内容并且判断所选框
+				for(var i in sourceData){
+					for(var index1 = 0; index1 < check1.length-1; index1++){
+						for(var index2 = 0; index2 < check2.length-1; index2++){
+							if(check1[index1].checked == true && check2[index2].checked == true){
+								if(check1[index1].value == sourceData[i].region && check2[index2].value == sourceData[i].product){
+									tab += "</tr>" + "<tr id='" + i + "'>" + "<td id='td" + index1 +"'>" + check2[index2].value + "</td>" + "<td>" + check1[index1].value + "</td>";
+									for(var j=0; j<sourceData[i].sale.length; j++){
+										tab += "<td>" + sourceData[i].sale[j] + "</td>";
+									}
+									tab += "</tr>";
+								}
+							}
+						}
+					}
+				}
+				tab += "</table>";
+				div.innerHTML = tab;
+			}
+			div.onmouseover = function(e){
+				var e = e || window.event;
+				var taget = e.target || e.srcElement;
+				if(taget.parentNode.nodeName.toLowerCase() == "tr" && taget.parentNode.id){
+					drawLine(taget.parentNode.id);
+					drawRect(taget.parentNode.id);
+				}
+			}
+			//折线图
+			function drawLine(index){
+				var x = 500;
+				var y = 400;
+				var space = 40;
+				var canvas = document.getElementById("canvas");
+				if(canvas.getContext){
+					var g = canvas.getContext("2d");
+					g.clearRect(0,0,500,400);
+					g.lineWidth = 5;
+					g.moveTo(x,y);
+					g.lineTo(0,y);
+					g.lineTo(0,0);
+					g.lineWidth = 2;
+					for(var i = 0; i<sourceData[index].sale.length; i++){
+						g.beginPath();
+						g.arc((i+1)*space, y-sourceData[index].sale[i], 2, 0, Math.PI*2);
+						if( i != 0){
+							g.moveTo((i)*space, y - sourceData[index].sale[i-1]);
+							g.lineTo((i+1)*space, y - sourceData[index].sale[i]);
+						}
+						g.stroke();
+					}
+				}
+			}
+			//柱状图
+			var main = document.getElementById("main");
+			function drawRect(index){
+				//清除之前鼠标显示的图表数据
+				main.innerHTML = "";
+				var y = 400;
+				var x = 500;
+				var width = 20;
+				var space = 20;
+				//画坐标X轴
+				var lineX = document.createElementNS("http://www.w3.org/2000/svg", "line" );
+				lineX.setAttribute("x1", 0);
+				lineX.setAttribute("y1", y);
+				lineX.setAttribute("x2", x);
+				lineX.setAttribute("y2", y);
+				lineX.setAttribute( "style", "stroke-width:2;stroke:black" );
+			    main.appendChild( lineX );
+			    //画坐标Y轴
+			    var lineY = document.createElementNS("http://www.w3.org/2000/svg", "line" );
+				lineY.setAttribute("x1", 0);
+				lineY.setAttribute("y1", y);
+				lineY.setAttribute("x2", 0);
+				lineY.setAttribute("y2", 0);
+				lineY.setAttribute( "style", "stroke-width:3;stroke:black" );
+			    main.appendChild( lineY );
+			    //遍历数据，画柱状图
+			    for(var i = 0, len = sourceData[index].sale.length; i < len; i++){
+			    	var rec = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+			    	rec.setAttribute("x", space);
+			    	rec.setAttribute("y", y - sourceData[index].sale[i]);
+			    	rec.setAttribute("width", width);
+			    	rec.setAttribute("height", sourceData[index].sale[i]);
+			    	rec.setAttribute("style", "fill: royalblue; stroke: blanchedalmond;")
+			   		main.appendChild(rec);
+			   		space += 40;
+			    }
+			}
+		</script>
+	</body>
+</html>
