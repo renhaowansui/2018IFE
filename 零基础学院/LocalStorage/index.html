@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script type="text/javascript" src="js/ife31data.js" ></script>
+	</head>
+	<body>
+		<div id="region-radio-wrapper">
+			<input type="checkbox" value="华东"/>华东
+			<input type="checkbox" value="华北"/>华北
+			<input type="checkbox" value="华南"/>华南
+			<input id="all1" type="checkbox" value="全选" />全选
+		</div>
+		<div id="product-radio-wrapper">
+			<input type="checkbox" value="手机"/>手机
+			<input type="checkbox" value="笔记本"/>笔记本
+			<input type="checkbox" value="智能音箱"/>智能音箱
+			<input id="all2" type="checkbox" value="全选" />全选
+		</div>
+		<div id="table-wrapper">	
+		</div>
+		<button onclick="save()" style="width: 100px; height: 40px;">保存</button>
+		<script>
+			var d1 = document.getElementById("region-radio-wrapper");
+			var check1 = d1.getElementsByTagName("input");
+			var all1 = document.getElementById("all1");
+			var d2 = document.getElementById("product-radio-wrapper");
+			var check2 = d2.getElementsByTagName("input");
+			var all2 = document.getElementById("all2");
+			var div = document.getElementById("table-wrapper");
+			//第一个选择框处理
+			d1.onchange = function(e){
+				var e = e || window.event;
+				var target = e.target || e.srcElement;
+				if(target.nodeName.toLowerCase() == "input"){
+					if(target.value =="全选"){
+						for( var i =0; i<check1.length-1; i++){
+							if(target.checked == true){
+								check1[i].checked = true;
+							}else{
+								check1[i].checked = false;
+							}
+						}
+					}
+					if(all1.checked == true){
+						for(var i = 0; i<check1.length-1; i++){
+							if(check1[i].checked == false){
+								all1.checked = false;
+								break;
+							}
+						}
+					}else{
+						for(var i = 0; i<check1.length-1; i++){
+							if(check1[i].checked == false){
+								break;
+							}
+							if(i == check1.length-2){
+								all1.checked = true;
+							}
+						}
+					}
+					print();
+				}
+			};
+			//第二个选择框处理
+			d2.onchange = function(e){
+				var e = e || window.event;
+				var target = e.target || e.srcElement;
+				if(target.nodeName.toLowerCase() == "input"){
+					if(target.value =="全选"){
+						for( var i =0; i<check2.length-1; i++){
+							if(target.checked == true){
+								check2[i].checked = true;
+							}else{
+								check2[i].checked = false;
+							}
+						}
+					}
+					if(all2.checked == true){
+						for(var i = 0; i<check2.length-1; i++){
+							if(check2[i].checked == false){
+								all2.checked = false;
+								break;
+							}
+						}
+					}else{
+						for(var i = 0; i<check2.length-1; i++){
+							if(check2[i].checked == false){
+								break;
+							}
+							if(i == check2.length-2){
+								all2.checked = true;
+							}
+						}
+					}
+					print();
+				}
+			};
+			//渲染表格内容
+			function print(){
+				var tab = "<table id='table1' border='1px'><tr><td>商品</td><td>地区</td>";
+				for(var j=1; j<13; j++){
+					tab += "<td>" + j + "月</td>";
+				}
+				tab += "</tr>" + "<tr>";
+				var index = -1;
+				for(var index1 = 0; index1 < check1.length-1; index1++){
+					for(var index2 = 0; index2 < check2.length-1; index2++){
+						if(check1[index1].checked == true && check2[index2].checked == true){
+							//检测localStorage是否有数据
+							if(outData.length > 0){
+								for(var i in outData){
+									if(check1[index1].value == outData[i].region && check2[index2].value == outData[i].product){
+										tab += "<td id='td" + index1 +"'><input type='text' size='4' disabled='disabled' value='" + check2[index2].value
+										+ "'/></td>"+ "<td><input type='text' size='1' disabled='disabled' value='" + check1[index1].value + "'></td>";
+										for(var j=0; j<outData[i].sale.length; j++){
+											tab += "<td><input type='text' size='1' value='" + outData[i].sale[j] + "'/></td>";
+										}
+										tab += "</tr>";
+										index = i;
+										console.log("localStorage输出");	
+									}
+								}
+							}
+							for(var i in sourceData){
+								if(i == index){
+									break;
+								}
+								if(check1[index1].value == sourceData[i].region && check2[index2].value == sourceData[i].product){
+									tab += "<td id='td" + index1 +"'><input type='text' size='4' disabled='disabled' value='" + check2[index2].value
+									+ "'/></td>"+ "<td><input type='text' size='1' disabled='disabled' value='" + check1[index1].value + "'></td>";
+									for(var j=0; j<sourceData[i].sale.length; j++){
+										tab += "<td><input type='text' size='1' value='" + sourceData[i].sale[j] + "'/></td>";
+									}
+									tab += "</tr>";
+								}
+								console.log("JS文件数据输出");	
+							}
+							index = -1;
+						}
+					}
+				}
+				tab += "</table>";
+				//输出表格内容
+				div.innerHTML = tab;
+				//获取表格内的input
+				inp = div.getElementsByTagName("input");
+				//每刷新一次表格就对Input添加事件
+				addEvent();
+			}
+			//申明表格内input变量
+			var inp = div.getElementsByTagName("input");
+			//input添加onblur()
+			function addEvent(){
+				for(var i = 0; i<inp.length; i++){
+					inp[i].onblur = function(){
+						if(isNaN(this.value)){
+							alert("输入值非数字");
+						}
+					}
+				}
+			}
+			//存储数据
+			function save(){
+				var objData = [];
+				//遍历所有input，并且将input数据存入定义的对象中
+				for(var i = 0; i < inp.length/14 ; i++){
+					var obj = { };
+					//单位数组销量
+					var saleArr = new Array(12);
+					obj.product = inp[0 + i*14].value;
+					obj.region = inp[1 + i*14].value;
+					for(var j = 0; j< 12; j++){
+						saleArr[j] = inp[(j+2) + i*14].value;
+					}
+					obj.sale = saleArr;
+					objData.push(obj);
+				}
+				//localStorage存取数据
+				localStorage.setItem("data",JSON.stringify(objData));
+			}
+			var outData = JSON.parse(localStorage.getItem("data"))
+			console.log(outData);
+		</script>
+	</body>
+</html>
