@@ -104,40 +104,43 @@
 					tab += "<td>" + j + "月</td>";
 				}
 				tab += "</tr>" + "<tr>";
-				var index = -1;
+				
 				for(var index1 = 0; index1 < check1.length-1; index1++){
 					for(var index2 = 0; index2 < check2.length-1; index2++){
 						if(check1[index1].checked == true && check2[index2].checked == true){
-							//检测localStorage是否有数据
-							if(outData.length > 0){
-								for(var i in outData){
-									if(check1[index1].value == outData[i].region && check2[index2].value == outData[i].product){
-										tab += "<td id='td" + index1 +"'><input type='text' size='4' disabled='disabled' value='" + check2[index2].value
-										+ "'/></td>"+ "<td><input type='text' size='1' disabled='disabled' value='" + check1[index1].value + "'></td>";
-										for(var j=0; j<outData[i].sale.length; j++){
-											tab += "<td><input type='text' size='1' value='" + outData[i].sale[j] + "'/></td>";
-										}
-										tab += "</tr>";
-										index = i;
-										console.log("localStorage输出");	
+							//从localStorage输出已有数据
+							for(var i in outData){
+								if(check1[index1].value == outData[i].region && check2[index2].value == outData[i].product){
+									tab += "<td id='td" + index1 +"'><input type='text' size='4' disabled='disabled' value='" + check2[index2].value
+									+ "'/></td>"+ "<td><input type='text' size='1' disabled='disabled' value='" + check1[index1].value + "'></td>";
+									for(var j=0; j<outData[i].sale.length; j++){
+										tab += "<td><input type='text' size='1' value='" + outData[i].sale[j] + "'/></td>";
 									}
+									tab += "</tr>";
+									console.log("localStorage输出");	
 								}
 							}
 							for(var i in sourceData){
-								if(i == index){
-									break;
-								}
 								if(check1[index1].value == sourceData[i].region && check2[index2].value == sourceData[i].product){
-									tab += "<td id='td" + index1 +"'><input type='text' size='4' disabled='disabled' value='" + check2[index2].value
-									+ "'/></td>"+ "<td><input type='text' size='1' disabled='disabled' value='" + check1[index1].value + "'></td>";
-									for(var j=0; j<sourceData[i].sale.length; j++){
-										tab += "<td><input type='text' size='1' value='" + sourceData[i].sale[j] + "'/></td>";
+									var pan = 0;	
+									//判断localStorage是否存在所选内容
+									for(var a in outData){
+										if(sourceData[i].product == outData[a].product && sourceData[i].region == outData[a].region){
+											pan = 1;
+										}		
 									}
-									tab += "</tr>";
+									//如果localStorage不存在则输出数据
+									if(pan != 1){
+										tab += "<td id='td" + index1 +"'><input type='text' size='4' disabled='disabled' value='" + check2[index2].value
+										+ "'/></td>"+ "<td><input type='text' size='1' disabled='disabled' value='" + check1[index1].value + "'></td>";
+										for(var j=0; j<sourceData[i].sale.length; j++){
+											tab += "<td><input type='text' size='1' value='" + sourceData[i].sale[j] + "'/></td>";
+										}
+										tab += "</tr>";
+										console.log("JS文件数据输出");	
+									}
 								}
-								console.log("JS文件数据输出");	
 							}
-							index = -1;
 						}
 					}
 				}
