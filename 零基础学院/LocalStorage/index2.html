@@ -110,12 +110,12 @@
 				for(var j=1; j<13; j++){
 					tab += "<td>" + j + "月</td>";
 				}
-				tab += "</tr>" + "<tr>";
-				
+				tab += "</tr>" + "<tr>";				
 				for(var index1 = 0; index1 < check1.length-1; index1++){
 					for(var index2 = 0; index2 < check2.length-1; index2++){
 						if(check1[index1].checked == true && check2[index2].checked == true){
 							//从localStorage输出已有数据
+							/*
 							for(var i in outData){
 								if(check1[index1].value == outData[i].region && check2[index2].value == outData[i].product){
 									tab += "<td id='td" + index1 +"'><input type='text' size='4' disabled='disabled' value='" + check2[index2].value
@@ -127,15 +127,18 @@
 									console.log("localStorage输出");	
 								}
 							}
+							*/
 							for(var i in sourceData){
 								if(check1[index1].value == sourceData[i].region && check2[index2].value == sourceData[i].product){
 									var pan = 0;	
+									/*
 									//判断localStorage是否存在所选内容
 									for(var a in outData){
 										if(sourceData[i].product == outData[a].product && sourceData[i].region == outData[a].region){
 											pan = 1;
 										}		
 									}
+									*/
 									//如果localStorage不存在则输出数据
 									if(pan != 1){
 										tab += "<td id='td" + index1 +"'><input type='text' size='4' disabled='disabled' value='" + check2[index2].value
@@ -157,18 +160,12 @@
 				div.innerHTML = tab;
 				//获取表格内的input
 				inp = div.getElementsByTagName("div");
-				//每刷新一次表格就对Input添加事件
-				addEvent();
-				
-				
+				//添加编辑功能	
 				edit();
 			}
-			//申明表格内input变量
-				//var inp = div.getElementsByTagName("input");
 			//input添加事件，编辑功能
 			function edit(){
 				for(var i = 0; i < inp.length; i++){
-
 					inp[i].onmouseover = function(){
 						//表格内销量数据
 						var value = this.parentNode.innerText;
@@ -179,34 +176,43 @@
 						var editAll = this.parentNode.getElementsByClassName("editAll")[0];
 						editButton.onclick = function(){
 							//显示修改框
-							editAll.style.display = 'block';
-							
+							editAll.style.display = 'block';		
 						}
 						//点击确定按钮
 						var editYes = this.parentNode.getElementsByClassName("editYes")[0];
-						editYes.onclick = function(){
-
+						editYes.onclick = function(e){
+							editDo(e);
+						}
+						function editDo(e){
+							//获取编辑文本框，并且将文本框数据放入表格标签数据内
+							var e = e || window.event;
+							var target = e.target || e.srcElement;
+							var editText = target.parentNode.getElementsByClassName("editText")[0];
+							if( editText.value && !isNaN(editText.value) && editText.value.indexOf(" ") < 0){
+								target.parentNode.parentNode.getElementsByTagName("label")[0].innerText = editText.value;
+							}else{
+								alert("输入数据不是有效数字");
+							}
+							editText.value = "";
 						}
 						//点击取消按钮
 						var editNo = this.parentNode.getElementsByClassName("editNo")[0];
 						editNo.onclick = function(){
 							editAll.style.display = "none";	
 						}
+						document.onkeyup = function(e){
+							if(e.keyCode == 13){
+								editDo(e);
+							}
+							if(e.keyCode == 27){
+								editAll.style.display = "none";	
+							}
+						}
 					}
 					inp[i].onmouseleave = function(){
 						this.parentNode.getElementsByClassName("edit")[0].style.display = "none";
 						var editAll = this.parentNode.getElementsByClassName("editAll")[0];
 						editAll.style.display = "none";
-					}
-				}
-			}
-			//input添加onblur()
-			function addEvent(){
-				for(var i = 0; i<inp.length; i++){
-					inp[i].onblur = function(){
-						if(isNaN(this.value)){
-							alert("输入值非数字");
-						}
 					}
 				}
 			}
@@ -230,9 +236,9 @@
 					//localStorage存取数据
 					localStorage.setItem("data",JSON.stringify(objData));
 				}
-			*/
 				var outData = JSON.parse(localStorage.getItem("data"))
 				console.log(outData);
+			*/
 		</script>
 	</body>
 </html>
