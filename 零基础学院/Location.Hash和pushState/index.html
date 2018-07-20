@@ -5,6 +5,28 @@
 		<title></title>
 	</head>
 	<body>
-		
+		<button id="a">A</button>
+		<button id="b">B</button>
+		<button id="c">C</button>
+		<div id="cont"></div>
+		<script>
+			var cont = document.getElementById("cont");
+			var but = document.getElementsByTagName("button");
+			for(var i in but){
+				but[i].onclick = function(){
+					location.hash = this.id;
+					show();
+				}
+			}
+			function getHash(){
+				return location.hash;
+			}
+			function show(){
+				cont.innerHTML = getHash();
+				alert(location.search);
+			}
+			window.onhashchange = show();
+			show();
+		</script>
 	</body>
 </html>
