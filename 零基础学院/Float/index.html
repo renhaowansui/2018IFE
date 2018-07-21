@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			#after:after{
+				content: "";
+				visibility: hidden;
+				display: block;
+				clear: both;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="border:1px solid black;">
+			<div style="background:aqua; float:left">左边块</div>
+			<div style="background:blue; float:left">右边块</div>
+		</div>
+		<footer style="border:1px solid red; clear:both">
+			footer
+		</footer>
+		<!--
+        	底部清除浮动，类似这种代码会造成wrap高度塌陷
+        -->
+        <br />
+		<div style="border:1px solid black;">
+			<div style="background:aqua; float:left">左边块</div>
+			<div style="background:blue; float:left">右边块</div>
+			<div style="clear:both;"></div>
+		</div>
+		<footer style="border:1px solid red;">
+			footer
+		</footer>
+		<!--
+			添加额外标签可以解决高度坍塌问题，类似于div、br标签
+			添加多个无意义的空标签，不便于后期维护
+		-->	
+		<br />
+		<div style="border:1px solid black; overflow: hidden;">
+			<div style="background:aqua; float:left">左边块</div>
+			<div style="background:blue; float:left">右边块</div>
+		</div>
+		<footer style="border:1px solid red;">
+			footer
+		</footer>
+		<!--
+        	通过设置父元素display值为table
+        	会造成盒模型的改变
+        -->
+        <br />
+		<div style="border:1px solid black; display: table;">
+			<div style="background:aqua; float:left">左边块</div>
+			<div style="background:blue; float:left">右边块</div>
+		</div>
+		<footer style="border:1px solid red;">
+			footer
+		</footer>
+        <br />
+		<div id="after" style="border:1px solid black;">
+			<div style="background:aqua; float:left">左边块</div>
+			<div style="background:blue; float:left">右边块</div>
+		</div>
+		<footer style="border:1px solid red;">
+			footer
+		</footer>
+		<!--
+        	设置父元素的after的伪元素:content,display,clear值等
+        -->
+	</body>
+</html>

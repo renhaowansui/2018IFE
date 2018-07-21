@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			#sprite{
+				background: url("http://ife.baidu.com/2016/static/img/erik_ce204002.jpg");
+				background-position-y: -10px;
+				background-repeat: no-repeat;
+				width: 480px;
+				height: 480px;
+				margin: 0 auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="sprite">
+		</div>
+		<script>
+			var id = document.getElementById("sprite");
+			var num = -10;
+			var flow = 0;
+			var meter = setInterval("pan()",100);
+			function pan(){
+				if(flow == 0 ){
+					move1();
+				}else{
+					move2();
+				}
+			}
+			function move1(){
+				num -= 480;
+				id.style.backgroundPositionY = num + "px";
+				if(num == -16*480-10){
+					flow = 1;
+				}
+			}
+			function move2(){
+				num += 480;
+				id.style.backgroundPositionY = num + "px";
+				if(num == -10){
+					flow = 0;
+				}
+			}
+		</script>
+	</body>
+</html>
