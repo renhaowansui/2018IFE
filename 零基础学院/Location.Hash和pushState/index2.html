@@ -15,5 +15,37 @@
 
 		<div id="contABC"></div>
 		<div id="contDEF"></div>
+		<script>
+			var cont1 = document.getElementById("contABC");
+			var cont2 = document.getElementById("contDEF");
+			var but = document.getElementsByTagName("button");
+			var hash1 = "", hash2 = "";
+			for(var i = 0, len = but.length; i < len/2; i++){
+				but[i].onclick = function (){
+					hash1 = this.id;
+					location.hash = hash1 + hash2;
+					show();
+				}
+			}
+			for(var i = but.length/2, len = but.length; i < len; i++){
+				but[i].onclick = function (){
+					hash2 = this.id;
+					location.hash = hash1 + hash2;
+					show();
+				}
+			}
+			function getHash(){
+				var one = location.hash.charAt(1);
+				var two = location.hash.charAt(2);
+				return {
+					one, two
+				}
+			}
+			function show(){	
+				cont1.innerHTML = getHash().one;
+				cont2.innerHTML = getHash().two;
+			}
+			window.onhashchange = show();
+		</script>
 	</body>
 </html>
