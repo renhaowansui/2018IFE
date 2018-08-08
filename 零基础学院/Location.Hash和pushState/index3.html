@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script type="text/javascript" src="js/ife31data.js" ></script>
+	</head>
+	<body>
+		<select id="region-select">
+			<option>华东</option>
+			<option>华南</option>
+			<option>华北</option>
+		</select>
+		<select id="product-select">
+			<option>手机</option>
+			<option>笔记本</option>
+			<option>智能音箱</option>
+		</select>
+		<div id="table-wrapper">	
+		</div>
+		<script>
+			var sel1 = document.getElementById("region-select");
+			var sel2 = document.getElementById("product-select");
+			var p1 = sel1.getElementsByTagName("option");
+			var p2 = sel2.getElementsByTagName("option");
+			var div = document.getElementById("table-wrapper");
+			var hash1 = "0", hash2 = "0";
+			sel1.onchange = function(){
+				print(sel1.value,sel2.value);
+				hash1 = this.selectedIndex;
+				location.hash = hash1.toString() + hash2;
+			}
+			sel2.onchange = function(){
+				print(sel1.value,sel2.value);
+				hash2 = this.selectedIndex;
+				location.hash = hash1.toString() + hash2;
+			}
+			//渲染表格
+			function print(value1,value2){
+				var tab = "<table border='1px'><tr><td>商品</td><td>地区</td>";
+				for(var j=1; j<13; j++){
+					tab += "<td>" + j + "月</td>";
+				}
+				tab += "</tr>" + "<tr>";
+				for(var i in sourceData){
+					if(value1 == sourceData[i].region && value2 == sourceData[i].product){
+						tab += "<td>" + value2 + "</td>" + "<td>" + value1 + "</td>";
+						for(var j=0; j<sourceData[i].sale.length; j++){
+							tab += "<td>" + sourceData[i].sale[j] + "</td>";
+						}
+						tab += "</tr>";
+					}
+				}
+				tab += "</table>";
+				div.innerHTML = tab;
+			}
+			//获取hash内参数
+			function getHash(){
+				var str1 = location.hash.charAt(1);
+				var str2 = location.hash.charAt(2);
+				return {
+					str1, str2
+				}
+			}
+			function show(){
+				if(location.hash){
+					p1[getHash().str1].selected = true;
+					p2[getHash().str2].selected = true;
+					print(p1[getHash().str1].value,p2[getHash().str2].value);
+				}
+			}
+			//窗口的 hash （URL 中 # 后面的部分）改变时就会触发 hashchange
+			
+			setInterval("window.onhashchange = show();",200);
+			show();
+		</script>
+	</body>
+</html>

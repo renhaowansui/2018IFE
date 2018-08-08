@@ -14,8 +14,7 @@
 			var but = document.getElementsByTagName("button");
 			for(var i in but){
 				but[i].onclick = function(){
-					location.hash = this.id;
-					show();
+					history.replaceState(null, null, "#"+this.id);
 				}
 			}
 			function getHash(){
@@ -24,8 +23,7 @@
 			function show(){
 				cont.innerHTML = getHash();
 			}
-			window.onhashchange = show();
-			
+			setInterval("window.onpopstate = show();", 100);
 		</script>
 	</body>
 </html>
