@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		
+	</body>
+	<script>
+		//餐厅类
+		function Restaurant(object) {
+			this.cash = object.cash;
+			this.seats = object.seats;
+			this.staffs = object.staffs;		
+			//聘请员工
+			this.hire = function(person){
+				var sta = this.staffs;
+				sta.push(person);
+				this.staffs = sta;
+				return sta;
+			}
+			//解雇员工
+			this.fire = function(person){
+				var sta = this.staffs;
+				sta.pop(person);
+				this.staffs = sta;
+				return sta;
+			}
+		}
+		//职员类
+		function staff(id, name, salary){
+			this.id = id;
+			this.name = name;
+			this.salary = salary;
+		}
+		//服务员类
+		function waiter(id, name, salary){
+			staff.call(this, id, name, salary);
+			this.work = function(do){
+				if(Array.isArray(do)){
+					console.log("点菜");
+				}else{
+					console.log("上菜");
+				}
+			}
+		}
+		waiter.prototype = new staff();
+		//厨师类
+		function cook(id, name, salary){
+			staff.call(this, id, name, salary);
+			this.work = function(){
+				console.log("烹饪出菜品");
+			}
+		}
+		cook.prototype = new staff();
+		var fuwuyuan = new waiter(1, "服务员", 1000);
+		
+		/*
+		var ifeRestaurant = new Restaurant({
+		    cash: 1000000,
+		    seats: 20,
+		    staffs: []
+		});
+		
+		var newCook = new Cook("Tony", 10000);
+		ifeRestaurant.hire(newCook);
+		
+		console.log(ifeRestaurant.staffs);
+		
+		ifeRestaurant.fire(newCook);
+		console.log(ifeRestaurant.staffs);
+		*/
+		
+	</script>
+</html>

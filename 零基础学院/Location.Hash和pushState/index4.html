@@ -18,7 +18,8 @@
 				}
 			}
 			function getHash(){
-				return location.hash;
+				var str = location.href.split("#");
+				return str[1];	
 			}
 			function show(){
 				cont.innerHTML = getHash();

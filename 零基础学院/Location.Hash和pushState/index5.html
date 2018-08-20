@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<button id="a">A</button>
+		<button id="b">B</button>
+		<button id="c">C</button>
+		
+		<button id="d">D</button>
+		<button id="e">E</button>
+		<button id="f">F</button>
+
+		<div id="contABC"></div>
+		<div id="contDEF"></div>
+		<script>
+			var cont1 = document.getElementById("contABC");
+			var cont2 = document.getElementById("contDEF");
+			var but = document.getElementsByTagName("button");
+			var hash1 = "", hash2 = "";
+			for(var i = 0, len = but.length; i < len/2; i++){
+				but[i].onclick = function (){
+					hash1 = this.id;
+					history.replaceState(null, null, "#"+ hash1 + hash2);
+				}
+			}
+			for(var i = but.length/2, len = but.length; i < len; i++){
+				but[i].onclick = function (){
+					hash2 = this.id;
+					history.replaceState(null, null, "#"+ hash1 + hash2);
+				}
+			}
+			function getHash(){
+				var str = location.href.split("#");
+				var one = str[1].charAt(0);
+				var two = str[1].charAt(1);
+				return {
+					one, two
+				}
+			}
+			function show(){	
+				cont1.innerHTML = getHash().one;
+				cont2.innerHTML = getHash().two;
+			}
+			setInterval("window.onpopstate = show();", 200);
+		</script>
+	</body>
+</html>
