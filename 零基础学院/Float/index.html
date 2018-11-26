@@ -22,7 +22,7 @@
 		</footer>
 		<!--
         	底部清除浮动，类似这种代码会造成wrap高度塌陷
-        -->
+    		-->
         <br />
 		<div style="border:1px solid black;">
 			<div style="background:aqua; float:left">左边块</div>
@@ -44,10 +44,9 @@
 		<footer style="border:1px solid red;">
 			footer
 		</footer>
-		<!--
-        	通过设置父元素display值为table
-        	会造成盒模型的改变
-        -->
+		<!-- 
+		内容增多时候容易造成不会自动换行导致内容被隐藏掉，无法显示需要溢出的元素；
+		-->
         <br />
 		<div style="border:1px solid black; display: table;">
 			<div style="background:aqua; float:left">左边块</div>
@@ -56,6 +55,10 @@
 		<footer style="border:1px solid red;">
 			footer
 		</footer>
+		<!--
+        	通过设置父元素display值为table
+        	会造成盒模型的改变
+        	-->
         <br />
 		<div id="after" style="border:1px solid black;">
 			<div style="background:aqua; float:left">左边块</div>
@@ -66,6 +69,6 @@
 		</footer>
 		<!--
         	设置父元素的after的伪元素:content,display,clear值等
-        -->
+        	-->
 	</body>
 </html>
